@@ -522,10 +522,12 @@ main() {
         kubectl
         oc
         openshift-install
+        fcct   
         jq
     )
     for req in ${reqs[@]}; do
-        check_requirement $req
+        #check_requirement $req
+        echo $req  
     done
 
     # Create the spaces bucket to hold the bulky bootstrap config
@@ -533,7 +535,8 @@ main() {
     # we create other resources.
     aws --endpoint-url $SPACES_ENDPOINT s3 mb $SPACES_BUCKET >/dev/null
 
-    # Create the image, load balancer, firewall, and VPC
+    # Create the tag, image, load balancer, firewall, and VPC
+    #doctl compute tag create "${ALL_DROPLETS_TAG}" >/dev/null
     create_image_if_not_exists
     create_vpc; sleep 20
     create_load_balancer; sleep 20
