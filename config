@@ -4,15 +4,15 @@
 # digitalocean-okd-install script.
 
 # Set the name/domain you'd like to use for this cluster.
-CLUSTERNAME='oc'
-BASEDOMAIN='okd.haute.pk'
+CLUSTERNAME='ocp4'
+BASEDOMAIN='okd.do-apps.olivecliq.com'
 DOMAIN="${CLUSTERNAME}.${BASEDOMAIN}"
 
 # Determine how many control plane and worker nodes you'd like.
 # Minimum workers=0. Minimum control plane=3. If no workers then
 # the control pane nodes will be marked as schedulable.
-NUM_OKD_WORKERS=0
-NUM_OKD_CONTROL_PLANE=1
+NUM_OKD_WORKERS=1
+NUM_OKD_CONTROL_PLANE=3
 
 # Set the region to use. Default to nyc3.
 DIGITAL_OCEAN_REGION='sgp1'
@@ -21,13 +21,13 @@ DIGITAL_OCEAN_REGION='sgp1'
 SPACES_ENDPOINT="https://${DIGITAL_OCEAN_REGION}.digitaloceanspaces.com"
 
 # Bucket to use. The DOMAIN should be unique enough.
-SPACES_BUCKET="s3://${DOMAIN}"
+SPACES_BUCKET="s3://citizen"
 
 # The ssh keypair id (required to start a droplet)
 DROPLET_KEYPAIR='29787178' # `doctl compute ssh-key list` to fine IDs
 
 # The size of the droplets.
-DROPLET_SIZE='s-4vcpu-8gb' # `doctl compute size list` for more options
+DROPLET_SIZE='s-8vcpu-16gb' # `doctl compute size list` for more options
 
 # The location of the Fedora CoreOS image to use. The script takes
 # care of the import [1] for you. It will also skip the image import if

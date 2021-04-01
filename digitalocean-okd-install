@@ -71,7 +71,7 @@ generate_manifests() {
     # Generate a pre-signed URL to use to grab the config. Ensures
     # only we can grab it and it expires after short period of time.
     url=$(aws --endpoint-url $SPACES_ENDPOINT s3 presign \
-                "${SPACES_BUCKET}/bootstrap.ign" --expires-in 300)
+                "${SPACES_BUCKET}/bootstrap.ign" --expires-in 3000)
     # backslash escape the '&' chars in the URL since '&' is interpreted by sed
     escapedurl=${url//&/\\&}
 
@@ -477,8 +477,8 @@ EOF
     doctl compute domain delete $DOMAIN --force
     echo -e "\nDeleting Droplets."
     doctl compute droplet delete --tag-name $ALL_DROPLETS_TAG --force
-    echo -e "\nDeleting Spaces (S3) bucket and all contents."
-    aws --endpoint-url $SPACES_ENDPOINT s3 rb $SPACES_BUCKET --force
+    #echo -e "\nDeleting Spaces (S3) bucket and all contents."
+    #aws --endpoint-url $SPACES_ENDPOINT s3 rb $SPACES_BUCKET --force
     sleep 20 # Allow droplets to get removed from the VPC
     echo -e "\nDeleting VPC."
     doctl vpcs delete $(get_vpc_id) --force
@@ -533,36 +533,36 @@ main() {
     # Create the spaces bucket to hold the bulky bootstrap config
     # Doing it here tests early that the spaces access works before
     # we create other resources.
-    aws --endpoint-url $SPACES_ENDPOINT s3 mb $SPACES_BUCKET >/dev/null
+    #aws --endpoint-url $SPACES_ENDPOINT s3 mb $SPACES_BUCKET >/dev/null
 
     # Create the tag, image, load balancer, firewall, and VPC
     #doctl compute tag create "${ALL_DROPLETS_TAG}" >/dev/null
-    create_image_if_not_exists
-    create_vpc; sleep 20
-    create_load_balancer; sleep 20
-    create_firewall
+    #create_image_if_not_exists
+    #create_vpc; sleep 20
+    #create_load_balancer; sleep 20
+    #create_firewall
 
     # Generate the ignition configs (places bootstrap config in spaces)
-    generate_manifests
+    #generate_manifests
 
     # Create the droplets and wait some time for them to get assigned
     # addresses so that we can create dns records using those addresses
-    create_droplets; sleep 20
+    #create_droplets; sleep 20
     # Print IP information to the screen for the logs (informational)
-    doctl compute droplet list | colrm 63
+    #doctl compute droplet list | colrm 63
 
     # Create domain and dns records. Do it after droplet creation
     # because some entries are for dynamic addresses
-    create_domain_and_dns_records
+    #create_domain_and_dns_records
 
     # Wait for the bootstrap to complete
     echo -e "\nWaiting for bootstrap to complete.\n"
-    openshift-install --dir=generated-files  wait-for bootstrap-complete
+    #openshift-install --dir=generated-files  wait-for bootstrap-complete  --log-level=debug
 
     # remove bootstrap node and config space as bootstrap is complete
     echo -e "\nRemoving bootstrap resources.\n"
-    doctl compute droplet delete bootstrap --force >/dev/null
-    aws --endpoint-url $SPACES_ENDPOINT s3 rb $SPACES_BUCKET --force >/dev/null
+    #doctl compute droplet delete bootstrap --force >/dev/null
+    #aws --endpoint-url $SPACES_ENDPOINT s3 rb $SPACES_BUCKET --force >/dev/null
 
     # Set the KUBECONFIG so subsequent oc or kubectl commands can run
     export KUBECONFIG=${PWD}/generated-files/auth/kubeconfig
@@ -576,7 +576,7 @@ main() {
 
     # Wait for the install to complete
     echo -e "\nWaiting for install to complete.\n"
-    openshift-install --dir=generated-files  wait-for install-complete
+    openshift-install --dir=generated-files  wait-for install-complete  --log-level=debug
 
     # Configure DO block storage driver
     # NOTE: this will store your API token in your cluster

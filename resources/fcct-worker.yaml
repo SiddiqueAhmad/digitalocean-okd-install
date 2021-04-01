@@ -6,6 +6,11 @@ ignition:
   config:
     merge:
       - local: ./generated-files/worker.ign
+passwd:
+  users:
+    - name: core
+      ssh_authorized_keys:
+        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC9+yJ+o+3mOzHSkYYC8lwvCnWdMH31M5ZteOxlwZtcJoIom28CrD1RcZrDPArjw5FNowfZahRrVOmqNnUCUESRgm1qyaPoJMqQB+i>
 systemd:                        
   units:                        
   # Set the hostname

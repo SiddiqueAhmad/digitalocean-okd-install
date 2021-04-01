@@ -9,6 +9,11 @@ ignition:
       - source: SOURCE_URL
         verification:
           hash: SHA512
+passwd:
+  users:
+    - name: core
+      ssh_authorized_keys:
+        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC9+yJ+o+3mOzHSkYYC8lwvCnWdMH31M5ZteOxlwZtcJoIom28CrD1RcZrDPArjw5FNowfZahRrVOmqNnUCUESRgm1qyaPoJMqQB+iAv4RGtXVGVnvSTckv98yxH4PAzJsojiqnGzuyrFs1PY+mmp0smBCHov0K4OP2c6LZdEOFspJKrvvjLKKZAxTYOIMIOPckfnWLqVrGcwEYGBfzFZv/wVEYj3QhQr/AuPQ0ZY3goIkeqkv/Jy32RcNAa9Wi1JqTOnzZdy0m8RFy1F2jELLO2RC9zOSnFD9JgF8oaNk2wf/NDSZ9LGsOxh5M4syTXTzl205RQRvNn51S1ca/3k/hvjlsFyeBZQwWZ43rUBCx2EmBXo9jKkJXH1XXOzVMG9yqFPEbGdQd6tybCi53B3X7JjEEOQBxU1RTwgfXAcW6yo2WPvJ3aBa05kpT8OW8dH7+ZZ7Kic16UJ+PKgbmn1/vYPC41vtpni/pPalqQibLVlznxj7nBaBw7FlbQaDa3NXF6q8Tps3TDW3Gk/AIEF6fbM4u3sSkSzmXKDco9fsXfmtRqxZDQA6wqqcohD4dWD7MYmqbxnakFCZ+9LbOqyUAiuPcmW3iCQiwaTbYVirOZCha144sVfX44jI1CPI+1+2sO8r/JN+MvdBLfGpedFyhyUo63QMFjZIsuj0zl/POQQ== siddique.ahmad@gmail.com
 systemd:                        
   units:                        
   - name: sethostname.service       
